@@ -50,7 +50,7 @@ string get_session_exec(const string session, const string xdgSessionDir) {
     string execLine;
     bool sessionFound = false;
     for (const auto& entry : filesystem::directory_iterator(xdgSessionDir)) {
-        while(sessionFound = false)
+        while(sessionFound == false)
         {
             if (entry.is_regular_file() && entry.path().extension() == ".desktop") {
                 ifstream desktopFile(entry.path());
