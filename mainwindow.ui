@@ -40,7 +40,7 @@
      <string>TGDM</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="Username">
