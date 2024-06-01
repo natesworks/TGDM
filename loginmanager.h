@@ -15,7 +15,7 @@ int pam_conv_func(int num_msg, const struct pam_message **msg, struct pam_respon
 
 bool pam_authenticate(const char *username);
 
-void login_user_shell(const std::string& username);
+int prepareuser(const string& username, string session);
 
 bool executeCommand(string file);
 

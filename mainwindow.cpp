@@ -7,6 +7,8 @@ using namespace std;
 
 string username;
 string password;
+QStringList waylandSessions;
+QStringList xorgSessions;
 QStringList sessions;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,8 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    sessions = get_sessions("/usr/share/wayland-sessions");
-    ui->SessionSelector->addItems(sessions);
+    waylandSessions = get_sessions("/usr/share/wayland-sessions");
+    ui->SessionSelector->addItems(waylandSessions);
+    xorgSessions = get_sessions("/usr/share/xsessions");
+    ui->SessionSelector->addItems(xorgSessions);
 }
 
 MainWindow::~MainWindow()
@@ -34,9 +38,7 @@ void MainWindow::on_Login_clicked()
         cout << "Authentication failed!" << endl;
     }
     const QString session = ui->SessionSelector->currentText();
-    const string sessionStr = session.toStdString();
-    const string sessionExec = get_session_exec(sessionStr, "/usr/share/wayland-sessions");
-    cout << sessionStr;
-    executeCommand(sessionExec);
+    const string sessionExec = get_session_exec(session.toStdString(), "/usr/share/wayland-sessions");
+    prepareuser(username, sessionExec);
 }
 

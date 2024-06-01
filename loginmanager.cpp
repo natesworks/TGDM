@@ -137,11 +137,12 @@ bool pam_authenticate(const char *username) {
     return false;
 }
 
-void login_user_shell(const string& username) {
+int prepareuser(const string& username, string session)
+{
     struct passwd *pw = getpwnam(username.c_str());
     if (!pw) {
         cerr << "User not found." << endl;
-        return;
+        return 1;
     }
 
     setuid(pw->pw_uid);
@@ -152,8 +153,9 @@ void login_user_shell(const string& username) {
     setenv("USER", pw->pw_name, 1);
     setenv("SHELL", pw->pw_shell, 1);
 
-    execlp(pw->pw_shell, pw->pw_shell, (char *)nullptr);
-    perror("execlp");
+    executeCommand(session);
+
+    return 0;
 }
 
 bool executeCommand(string file)
@@ -170,6 +172,8 @@ bool executeCommand(string file)
     pid_t pid = fork();
     if (pid == 0)
     {
+        setenv("DISPLAY", ":1", 1);
+
         if (execvp(args[0], const_cast<char *const *>(args.data())) == -1)
         {
             if (errno == ENOENT)
